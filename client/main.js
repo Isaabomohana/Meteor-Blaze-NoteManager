@@ -14,6 +14,7 @@ Template.body.helpers({
   }
 });
 
+
 Template.add.events({
   'submit .add-form': function() {
     event.preventDefault();
@@ -23,24 +24,20 @@ Template.add.events({
 
     Notes.insert({
       text,
-      createdAt: new Date()
+      createdAt: new Date(),
+      owner: Meteor.userId(),
+      username: Meteor.user().username
     });
 
     target.text.value = '';
-    $('#add').modal('close');
+    $('#addModal').modal('close');
   }
 });
 
 Template.note.events({
   'click .delete-note': function(){
-    Notes.remove(this._id);
+    // Notes.remove(this._id);
+    Meteor.call('notes.remove', this )
     return false
   }
 });
-
-$(document).ready(function() {
-    $(".button-collapse").sideNav({
-      closeOnClick: true
-    });
-    $('.modal').modal();
-  });
